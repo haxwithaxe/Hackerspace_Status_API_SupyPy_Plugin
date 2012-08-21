@@ -1,0 +1,29 @@
+ERROR 2012-08-21T01:03:01 supybot Invalid user dictionary file, resetting to empty.
+ERROR 2012-08-21T01:03:01 supybot Exact error: IOError: [Errno 2] No such file or directory: 'conf/users.conf'
+ERROR 2012-08-21T01:03:01 supybot Invalid channel database, resetting to empty.
+ERROR 2012-08-21T01:03:01 supybot Exact error: IOError: [Errno 2] No such file or directory: 'conf/channels.conf'
+WARNING 2012-08-21T01:03:01 supybot Couldn't open ignore database: [Errno 2] No such file or directory: 'conf/ignores.conf'
+INFO 2012-08-21T01:03:01 supybot Shutdown initiated.
+INFO 2012-08-21T01:03:01 supybot Killing Driver objects.
+INFO 2012-08-21T01:03:01 supybot Killing Irc objects.
+INFO 2012-08-21T01:03:01 supybot Shutdown complete.
+INFO 2012-08-21T01:04:42 supybot Shutdown initiated.
+INFO 2012-08-21T01:04:42 supybot Killing Driver objects.
+INFO 2012-08-21T01:04:42 supybot Killing Irc objects.
+INFO 2012-08-21T01:04:42 supybot Shutdown complete.
+INFO 2012-08-21T01:09:01 supybot Shutdown initiated.
+INFO 2012-08-21T01:09:01 supybot Killing Driver objects.
+INFO 2012-08-21T01:09:01 supybot Killing Irc objects.
+INFO 2012-08-21T01:09:01 supybot Shutdown complete.
+INFO 2012-08-21T01:14:29 supybot Shutdown initiated.
+INFO 2012-08-21T01:14:29 supybot Killing Driver objects.
+INFO 2012-08-21T01:14:29 supybot Killing Irc objects.
+INFO 2012-08-21T01:14:29 supybot Shutdown complete.
+INFO 2012-08-21T01:14:59 supybot Shutdown initiated.
+INFO 2012-08-21T01:14:59 supybot Killing Driver objects.
+INFO 2012-08-21T01:14:59 supybot Killing Irc objects.
+INFO 2012-08-21T01:14:59 supybot Shutdown complete.
+INFO 2012-08-21T01:15:25 supybot Shutdown initiated.
+INFO 2012-08-21T01:15:25 supybot Killing Driver objects.
+INFO 2012-08-21T01:15:25 supybot Killing Irc objects.
+INFO 2012-08-21T01:15:25 supybot Shutdown complete.
