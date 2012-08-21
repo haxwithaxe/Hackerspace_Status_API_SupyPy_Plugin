@@ -1,30 +1,5 @@
 ###
-# Copyright (c) 2005, Jeremiah Fincher
-# All rights reserved.
 #
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted provided that the following conditions are met:
-#
-#   * Redistributions of source code must retain the above copyright notice,
-#     this list of conditions, and the following disclaimer.
-#   * Redistributions in binary form must reproduce the above copyright notice,
-#     this list of conditions, and the following disclaimer in the
-#     documentation and/or other materials provided with the distribution.
-#   * Neither the name of the author of this software nor the name of
-#     contributors to this software may be used to endorse or promote products
-#     derived from this software without specific prior written consent.
-#
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-# ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
-# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-# POSSIBILITY OF SUCH DAMAGE.
 ###
 
 import supybot.conf as conf
@@ -37,46 +12,38 @@ def configure(advanced):
     # user or not.  You should effect your configuration by manipulating the
     # registry as appropriate.
     from supybot.questions import expect, anything, something, yn
-    conf.registerPlugin('HackerSpaceStatus', True)
+    conf.registerPlugin('HackerspaceStatus', True)
 
 
-class FeedNames(registry.SpaceSeparatedListOfStrings):
+class HackerspaceNames(registry.SpaceSeparatedListOfStrings):
     List = callbacks.CanonicalNameSet
 
-HSS = conf.registerPlugin('HackerSpaceStatus')
-conf.registerChannelValue(HSS, 'bold', registry.Boolean(
-    True, """Determines whether the bot will bold the title of the feed when it
+HackerspaceStatus = conf.registerPlugin('HackerspaceStatus')
+conf.registerChannelValue(HackerspaceStatus, 'bold', registry.Boolean(
+    False, """Determines whether the bot will bold the status message when it
     announces new news."""))
-conf.registerChannelValue(HSS, 'headlineSeparator',
-    registry.StringSurroundedBySpaces(' || ', """Determines what string is used
-    to separate headlines in new feeds."""))
-conf.registerChannelValue(HSS, 'announcementPrefix',
-    registry.StringWithSpaceOnRight('Status from ', """Determines what prefix
-    is prepended (if any) to the new news item announcements made in the
+conf.registerChannelValue(HackerspaceStatus, 'headlineSeparator',
+    registry.StringSurroundedBySpaces(' ', """Determines what string is used
+    to separate statuses in list."""))
+conf.registerChannelValue(HackerspaceStatus, 'announcementPrefix',
+    registry.StringWithSpaceOnRight('', """Determines what prefix
+    is prepended (if any) to the new status message item announcements made in the
     channel."""))
-conf.registerChannelValue(HSS, 'announce',
+conf.registerChannelValue(HackerspaceStatus, 'announce',
     registry.SpaceSeparatedSetOfStrings([], """Determines which
-    HackerSpaceStatus feeds should be announced in the channel; valid input is
-    a list of strings (either registered HackerSpaceStatus feeds or HackerSpaceStatus feed URLs) separated
-    by spaces."""))
-conf.registerGlobalValue(HSS, 'waitPeriod',
-    registry.PositiveInteger(120, """Indicates how many seconds the bot will
-    wait between retrieving HackerSpaceStatus feeds; requests made within this period will
-    return cached results."""))
-conf.registerGlobalValue(HSS, 'feeds',
-    FeedNames([], """Determines what feeds should be accessible as
-    commands."""))
-conf.registerChannelValue(HSS, 'showLinks',
-    registry.Boolean(False, """Determines whether the bot will list the link
-    along with the title of the feed when the hss command is called.
-    supybot.plugins.HackerSpaceStatus.announce.showLinks affects whether links will be
-    listed when a feed is automatically announced."""))
+    status should be announced in the channel; valid input is
+    a list of strings (status URLs) separated by spaces."""))
 
-conf.registerGroup(HSS, 'announce')
-conf.registerChannelValue(HSS.announce, 'showLinks',
-    registry.Boolean(False, """Determines whether the bot will list the link
-    along with the title of the feed when a feed is automatically
-    announced."""))
+conf.registerGlobalValue(HackerspaceStatus, 'waitPeriod',
+    registry.PositiveInteger(120, """Indicates how many seconds the bot will
+    wait between retrieving statuses; requests made within this period will
+    return cached results."""))
+
+conf.registerGlobalValue(HackerspaceStatus, 'hackerspace_status',
+    HackerspaceNames([], """Determines what hackerspace status should be accessible as
+    commands."""))
+
+conf.registerGroup(HackerspaceStatus, 'announce')
 
 
 

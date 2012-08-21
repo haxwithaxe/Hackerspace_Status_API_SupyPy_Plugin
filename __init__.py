@@ -13,7 +13,7 @@ import supybot.world as world
 # in here if you're keeping the plugin in CVS or some similar system.
 __version__ = "%%VERSION%%"
 
-__author__ = 'haxwithaxe <me_AT_haxwithaxe_DOT_net>'
+__author__ = supybot.Author('','haxwithaxe','<me_AT_haxwithaxe_DOT_net>')
 
 # This is a dictionary mapping supybot.Author instances to lists of
 # contributions.
