@@ -6,6 +6,7 @@ import json
 import new
 import os
 import re
+import sys
 import time
 import urllib2
 import socket
@@ -25,29 +26,31 @@ class status(object):
         self.__init__(self)
     def __init__(self):
         self.urlre = re.compile('http[s]?[:]//.+\..+')
-    def get(self, src):
-        if self.urlre.match(src):
-            result = self.download(src)
+    def get(self, plug, src):
+        self.plug = plug
+        self.src = src
+        if self.urlre.match(self.src):
+            result = self.download()
         else:
-            result = self.read(src)
+            result = self.read()
         return json.loads(result)
 
-    def download(self, src):
+    def download(self):
         try:
-            result = urllib2.urlopen(src).read()
+            result = urllib2.urlopen(self.src).read()
         except urllib2.URLError as urlerr:
+            self.plug.log.info('url: "%s", message: "%s", code: %s' % (repr(urlerr.url),repr(urlerr.msg),repr(urlerr.code)))
             result = '{"default":"url not found"}'
         return result
 
-    def read(self,src):
-        if os.path.exists(src):
-            file_obj = open(src,'r')
+    def read(self):
+        if os.path.exists(self.src):
+            file_obj = open(self.src,'r')
             result = file_obj.read()
             file_obj.close()
         else:
             result = '{"default":"file not found"}'
         return result
-
 
 def get_status_name(irc, msg, args, state):
     if not registry.isValidRegistryName(args[0]):
@@ -57,7 +60,7 @@ def get_status_name(irc, msg, args, state):
 addConverter('status_name', get_status_name)
 
 def get_status_uri(irc, msg, args, state):
-    if not utils.web.urlRe.match(args[0]) and not os.exists(args[0]):
+    if not utils.web.urlRe.match(args[0]) and not os.path.exists(args[0]):
         state.errorInvalid('status uri', args[0],
                            'Status URIs must be valid URLs or file names.')
     state.args.append(callbacks.canonicalName(args.pop(0)))
@@ -208,7 +211,7 @@ class HackerspaceStatus(callbacks.Plugin):
             # and DoS the website in question.
             self.acquireLock(src)
             if self.willGetStatusUpdate(src):
-                results = status().get(src)
+                results = status().get(self, src)
                 if results and (src not in self.cachedStatus or results !=
                         self.cachedStatus[src]):
                     self.cachedStatus[src] = results
@@ -233,10 +236,10 @@ class HackerspaceStatus(callbacks.Plugin):
         Adds a command to this plugin that will look up the status of the given hackerspace at the
         given location.
         """
-        print('in add %s %s' % (space,src))
+        self.log.info('in add %s %s' % (space,src))
         self.makeStatusCommand(space, src)
         irc.replySuccess()
-    add = wrap(add, ['text', 'text'])
+    add = wrap(add, ['status_name', 'status_uri'])
 
     def remove(self, irc, msg, args, space):
         """<hackerspace>
@@ -265,8 +268,7 @@ class HackerspaceStatus(callbacks.Plugin):
         if src not in self.locks:
             self.locks[src] = threading.RLock()
         if self.isCommandMethod(space):
-            s = format('I already have a record for a hackerspace named
-                    %s.',space)
+            s = format('I already have a record for a hackerspace named %s.',space)
             raise callbacks.Error, s
         def f(self, irc, msg, args):
             args.insert(0, src)
