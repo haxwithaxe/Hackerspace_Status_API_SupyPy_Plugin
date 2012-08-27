@@ -136,9 +136,9 @@ class HackerspaceStatus(callbacks.Plugin):
             if self.acquireLock(src, blocking=False):
                 try:
                     t = threading.Thread(target=self._statusChanges,
-                                         name=format('%u', src),
+                                         name=format('%s', src),
                                          args=(irc, channels, name, src))
-                    self.log.info('Checking for announcements at %u', src)
+                    self.log.info('Checking for announcements at %s', src)
                     world.threadsSpawned += 1
                     t.setDaemon(True)
                     t.start()
@@ -171,7 +171,7 @@ class HackerspaceStatus(callbacks.Plugin):
                 s = status_changes[0][0]
                 if s in ('Timeout getting status.',
                          'Unable to get status.'):
-                    self.log.debug('%s %u', s, src)
+                    self.log.debug('%s %s', s, src)
                     return
             status = self.buildStatus(status_changes, channel)
             irc.replies(status, prefixer=pre, joiner=sep,
@@ -259,7 +259,7 @@ class HackerspaceStatus(callbacks.Plugin):
     def makeStatusCommand(self, space, src):
         docstring = format("""[<format>]
 
-        Reports the status for %s at the HackerspaceStatus feed %u.  If
+        Reports the status for %s at the HackerspaceStatus feed %s.  If
         <format> is given, returns that format.
         HackerspaceStatus feeds are only looked up every supybot.plugins.HackerspaceStatus.waitPeriod
         seconds, which defaults to 120 (2 minutes) since that's what we chose
@@ -284,7 +284,7 @@ class HackerspaceStatus(callbacks.Plugin):
         Gets the status of the given hackerspace.
         If <format> is given, return that format if available.
         """
-        self.log.debug('Fetching %u', src)
+        self.log.debug('Fetching %s', src)
         status = self.getStatus(src)
         if irc.isChannel(msg.args[0]):
             channel = msg.args[0]
